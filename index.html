@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080c11"><meta name="description" content="A fabric of dots that moves with your music. Tune its response, choose your colors, and watch in full screen."><title>Body Field — AxoField</title>
+<meta name="theme-color" content="#080c11"><meta name="description" content="A fabric of dots that moves with your music. Tune its response, choose your colors, and watch in full screen."><title>AxoField</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#080c11;color:#dce7ed;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}canvas#field{position:fixed;inset:0;width:100%;height:100%;touch-action:none}header{position:fixed;top:30px;left:32px;right:32px;display:flex;justify-content:space-between;gap:20px;pointer-events:none}h1{font-size:14px;font-weight:500;letter-spacing:.23em;margin:0}header span{font-size:12px;color:#8b9baa;letter-spacing:.1em}.panel{position:fixed;bottom:28px;left:32px;right:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}p{font-size:14px;line-height:1.6;margin:0 0 10px;max-width:520px}.privacy{font-size:12px;color:#92a1b0;margin:12px 0 0}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}button{font:inherit;font-size:14px;color:#dce7ed;background:#111b25;border:1px solid #425363;padding:12px 17px;border-radius:4px;cursor:pointer}button:hover{background:#1c2b3b}button:focus-visible,input:focus-visible{outline:2px solid #91dfff;outline-offset:4px}button:disabled{opacity:.6;cursor:wait}label{display:flex;align-items:center;gap:12px;font-size:12px;color:#a9bac8}input{width:105px;accent-color:#90d9fa}#status{font-size:12px;color:#9baebc;min-height:20px;margin-bottom:10px}#preview{position:fixed;right:28px;top:70px;width:180px;max-width:30vw;border-radius:4px;transform:scaleX(-1);opacity:.65}#preview[hidden]{display:none}@media(max-width:650px){header{top:22px;left:20px;right:20px}header span{display:none}.panel{left:20px;right:20px;bottom:20px;display:block}.tuning{margin-top:14px}p{font-size:14px}button{padding:11px 12px}}
 
@@ -13,10 +13,10 @@ body.dance-only header,body.dance-only .panel,body.dance-only .audio-panel,body.
 </style>
 </head>
 <body>
-<section id="entry-gate" aria-labelledby="entry-title"><div class="entry-copy"><h1 id="entry-title">BODY FIELD</h1><p>A responsive visual field for movement and sound.</p><p>Body Field can use your <strong>camera and microphone</strong> to respond to movement, music, typing, voices, and other activity in the room.</p><p><strong>Camera and microphone processing happens locally on your device.</strong><br>No video or audio is recorded, stored, or uploaded by Body Field.</p><p>No account is required.</p><p>This is an experimental visual instrument, not a medical, diagnostic, therapeutic, or safety device.</p><button id="enter">ENTER</button></div></section><div id="instrument" hidden inert>
+<section id="entry-gate" aria-labelledby="entry-title"><div class="entry-copy"><h1 id="entry-title">AXOFIELD</h1><p>A responsive visual field for movement and sound.</p><p>AxoField can use your <strong>camera and microphone</strong> to respond to movement, music, typing, voices, and other activity in the room.</p><p><strong>Camera and microphone processing happens locally on your device.</strong><br>No video or audio is recorded, stored, or uploaded by AxoField.</p><p>No account is required.</p><p>This is an experimental visual instrument, not a medical, diagnostic, therapeutic, or safety device.</p><button id="enter">ENTER</button></div></section><div id="instrument" hidden inert>
 <canvas id="field" aria-label="A field of dots that responds to camera movement"></canvas>
-<header><h1>BODY FIELD</h1><a href="https://uselessinstruments.com" target="_blank" rel="noopener">Useless Instruments</a></header>
-<details class="audio-panel" open><summary>Controls</summary><button id="camera">Camera on</button><button id="mic">Mic on</button><label>Sound sensitivity<input id="audio-gain" type="range" min="1" max="40" step="0.1" value="14.4"></label><label>Movement sensitivity<input id="sensitivity" type="range" min="0.5" max="3" step="0.1" value="0.6"></label><label>Dot color<input id="dot-color" type="color" value="#9cdcff" aria-label="Dot color"></label><label>Background color<input id="background-color" type="color" value="#080c11" aria-label="Background color"></label><button id="fullscreen">Full screen</button><button id="reset">Reset</button></details>
+<header><h1>AXOFIELD</h1><a href="https://uselessinstruments.com" target="_blank" rel="noopener">Useless Instruments</a></header>
+<details class="audio-panel" open><summary>Controls</summary><button id="camera">Camera on</button><button id="mic">Mic on</button><label>Movement sensitivity<input id="sensitivity" type="range" min="0.5" max="3" step="0.1" value="0.6"></label><p>Right column follows room sound. Camera movement remains in the fabric.</p><meter id="audio-meter" min="0" max="1" value="0" aria-label="Sound level"></meter><output id="audio-readout">Microphone off</output><div class="bands"><span>Bass<meter id="bass-meter" min="0" max="1" value="0"></meter></span><span>Mid<meter id="mid-meter" min="0" max="1" value="0"></meter></span><span>Treble<meter id="treble-meter" min="0" max="1" value="0"></meter></span></div><label>Response<select id="audio-mode"><option value="bands">Frequency bands</option><option value="level">Overall level</option><option value="pulse">Sharp bursts</option></select></label><label>Sensitivity<input id="audio-gain" type="range" min="1" max="40" step="1" value="14.4"></label><label>Noise floor<input id="audio-floor" type="range" min="0" max="0.05" step="0.001" value="0.003"></label><label>Attack<input id="audio-attack" type="range" min="0.03" max="1" step="0.01" value="0.12"></label><label>Release<input id="audio-release" type="range" min="0.1" max="3" step="0.1" value="0.8"></label><label>Fabric influence<input id="audio-influence" type="range" min="0" max="1" step="0.05" value="0.35"></label><label>Right column<input id="audio-column" type="checkbox" checked></label><button id="audio-calibrate">Learn quiet room · 3 seconds</button><p id="audio-note" role="status">Analyzes level, frequency bands and bursts locally. No speech recognition.</p><button id="audio-reset">Reset sound controls</button><label>Dot color<input id="dot-color" type="color" value="#9cdcff" aria-label="Dot color"></label><label>Sound band colors<input id="band-colors" type="checkbox" checked></label><label>Background<input id="background-color" type="color" value="#080c11" aria-label="Background color"></label><div class="view-controls"><button id="hide-controls">Hide controls</button><button id="fullscreen">Full screen</button></div><p>Escape restores controls. Double-click the fabric to show or hide them.</p><button id="reset">Reset</button></details>
 <video id="preview" autoplay muted playsinline hidden></video>
 <div class="panel"><div id="status" role="status" aria-live="polite">Camera off · Mic off</div></div></div>
 <script>
@@ -25,7 +25,7 @@ const canvas=document.getElementById('field'),ctx=canvas.getContext('2d');
 const video=document.getElementById('preview'),camera=document.getElementById('camera'),show={hidden:true,textContent:'',addEventListener(){}},status=document.getElementById('status'),sensitivity=document.getElementById('sensitivity');
 let entered=false;
 const enterButton=document.getElementById('enter');enterButton.onclick=()=>{entered=true;document.getElementById('entry-gate').hidden=true;const instrument=document.getElementById('instrument');instrument.hidden=false;instrument.inert=false;resize();document.getElementById('camera').focus();};
-const dotColor=document.getElementById('dot-color'),backgroundColor=document.getElementById('background-color'),bandColors={checked:true},fullscreenButton=document.getElementById('fullscreen');
+const dotColor=document.getElementById('dot-color'),backgroundColor=document.getElementById('background-color'),bandColors=document.getElementById('band-colors'),fullscreenButton=document.getElementById('fullscreen');
 let customDots=false,dotRgb=[156,220,255];
 dotColor.addEventListener('input',()=>{customDots=true;bandColors.checked=false;dotRgb=dotColor.value.match(/[a-f0-9]{2}/gi).map(v=>parseInt(v,16));});
 backgroundColor.addEventListener('input',()=>{document.body.style.backgroundColor=backgroundColor.value;document.querySelector('meta[name="theme-color"]').content=backgroundColor.value;});
@@ -107,9 +107,13 @@ addEventListener('pagehide',()=>stop());
 requestAnimationFrame(frame);
 const micButton=document.getElementById('mic');
 let micStream=null,audioContext=null,analyser=null,soundLevel=0,micPending=false,micEpoch=0;
-const audioControls={gain:document.getElementById('audio-gain'),floor:{value:.003},attack:{value:.12},release:{value:.8},influence:{value:.35},mode:{value:'bands'},column:{checked:true}};
+const audioControls=Object.fromEntries(['gain','floor','attack','release','influence','mode','column'].map(k=>[k,document.getElementById('audio-'+k)]));
 let soundBands=[0,0,0],soundBurst=0,rawSound=0,previousRms=0,audioLast=0,timeData=null,frequencyData=null,quietUntil=0,quietSamples=[],quietEpoch=0;
-const audioMeter={value:0},audioReadout={textContent:''},audioNote={textContent:''},calibrateButton={disabled:false};const bandMeters=[{value:0},{value:0},{value:0}];
+const audioMeter=document.getElementById('audio-meter'),audioReadout=document.getElementById('audio-readout'),audioNote=document.getElementById('audio-note'),calibrateButton=document.getElementById('audio-calibrate');
+const bandMeters=['bass','mid','treble'].map(k=>document.getElementById(k+'-meter'));
+calibrateButton.onclick=()=>{if(!analyser){audioNote.textContent='Start the microphone first.';return}quietUntil=performance.now()+3000;quietEpoch=micEpoch;quietSamples=[];calibrateButton.disabled=true;audioNote.textContent='Stay quiet for three seconds…'};
+document.getElementById('audio-reset').onclick=()=>{for(const [k,v] of Object.entries({gain:14.4,floor:.003,attack:.12,release:.8,influence:.35,mode:'bands'}))audioControls[k].value=v;audioControls.column.checked=true;audioNote.textContent='Sound controls reset.'};
+
 function audioAt(d){
  if(!analyser)return {level:0,column:false,band:0};
  const column=audioControls.column.checked&&d.bx>w*.88,mode=audioControls.mode.value;
@@ -161,6 +165,8 @@ micButton.onclick=async()=>{
  }catch(e){stopMic();status.textContent='Microphone could not start. Allow access in browser settings and try again.'}
  finally{if(epoch===micEpoch){micPending=false;micButton.disabled=false}}
 };
+calibrateButton.onclick=()=>{if(!analyser){audioNote.textContent='Start the microphone first.';return}quietUntil=performance.now()+3000;quietEpoch=micEpoch;quietSamples=[];calibrateButton.disabled=true;audioNote.textContent='Stay quiet for three seconds…'};
+document.getElementById('audio-reset').onclick=()=>{for(const [k,v] of Object.entries({gain:14.4,floor:.003,attack:.12,release:.8,influence:.35,mode:'bands'}))audioControls[k].value=v;audioControls.column.checked=true;audioNote.textContent='Sound controls reset.'};
 function listen(now){
  const dt=Math.min(.1,Math.max(.001,(now-audioLast)/1000||.016));audioLast=now;
  if(analyser){
@@ -177,6 +183,8 @@ function listen(now){
  }
  requestAnimationFrame(listen);
 }
+bandColors.onchange=()=>{if(bandColors.checked)customDots=false;};
+document.getElementById('hide-controls').onclick=()=>setDanceOnly(true);
 listen();
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMic();});
 addEventListener('pagehide',stopMic);
