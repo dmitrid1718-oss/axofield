@@ -95,7 +95,8 @@ function readMotion(){
 function frame(time){
  const dt=Math.min((time-lastFrame)/16.667||1,2);lastFrame=time;
  if(!document.hidden&&time-lastSample>40){readMotion();lastSample=time}
- ctx.fillStyle=backgroundColor.value;ctx.fillRect(0,0,w,h);
+ ctx.clearRect(0,0,w,h); // Keep the dune image visible behind the transparent field.
+ const bg=rgbFromHex(backgroundColor.value);ctx.fillStyle='rgba('+bg.join(',')+',0.42)';ctx.fillRect(0,0,w,h);
  pointer.power*=Math.pow(.94,dt);
  for(const d of dots){
  const sx=Math.min(95,Math.max(0,Math.floor(d.bx/w*96))),sy=Math.min(71,Math.max(0,Math.floor(d.by/h*72)));
